@@ -1,28 +1,23 @@
-# Etapa 1: Build
-FROM maven:3.8.6-eclipse-temurin-17 AS build
+# Dockerfile para Spring Boot en Render
+
+FROM eclipse-temurin:17-jdk-alpine as build
 
 WORKDIR /app
 
-# Copia archivos de configuración y código fuente
-COPY pom.xml .
-COPY src ./src
+COPY . .
 
-# Construye el proyecto y genera el JAR (sin tests para acelerar)
-RUN mvn clean package -DskipTests
+RUN chmod +x mvnw
 
-# Etapa 2: Runtime
+RUN ./mvnw clean package -DskipTests
+
+
+
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-# Copia el JAR generado desde la etapa build
 COPY --from=build /app/target/*.jar app.jar
 
-# Expone el puerto que usará la aplicación (Render usa variable PORT)
-EXPOSE 8086
+EXPOSE 8080
 
-# Define variable de entorno PORT (opcional)
-ENV PORT=8086
-
-# Ejecuta la aplicación usando el puerto definido en Render
-ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=$PORT"]
+ENTRYPOINT ["java","-jar","app.jar"]
