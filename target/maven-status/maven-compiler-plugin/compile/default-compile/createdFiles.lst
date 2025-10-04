@@ -1,0 +1,7 @@
+com\tecsup\model\demo.class
+com\tecsup\services\CursoService.class
+com\tecsup\services\CursoServiceImpl.class
+com\tecsup\model\daos\CursoRepository.class
+com\tecsup\DemoCrudSpringApplication.class
+com\tecsup\controller\CursoController.class
+com\tecsup\model\entities\Curso.class
